@@ -2,37 +2,72 @@ import React, { useEffect, useState } from 'react';
 import { Button, Rating, Spinner } from 'flowbite-react';
 
 
-// fetch dei dati da api e restituisce alla view
+// torna l'elenco dei film dall'api e li filtra per rating e recenti
 const Index = props => {
-    const [movies, setMovies] = useState([]);
-    const [loading, setLoading] = useState(true);
+  const [movies, setMovies] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [orderBy, setOrderBy] = useState('recent'); // default to 'recent'
 
-    const fetchMovies = () => {
-        setLoading(true);
+  const fetchMovies = () => {
+    setLoading(true);
 
-        return fetch('/api/movies')
-            .then(response => response.json())
-            .then(data => {
-                setMovies(data.movies);
-                setLoading(false);
-            });
+    return fetch('/api/movies')
+      .then(response => response.json())
+      .then(data => {
+        setMovies(data.movies);
+        setLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    fetchMovies();
+  }, []);
+
+
+  // funzione di ordinamento
+  const sortMovies = (a, b) => {
+    if (orderBy === 'recent') {
+      // ordina per data di uscita più recente
+      return new Date(b.release_date) - new Date(a.release_date);
+    } else if (orderBy === 'rating') {
+      // ordina per valutazione, più alta prima
+      return b.rating - a.rating;
     }
+  };
 
-    useEffect(() => {
-        fetchMovies();
-    }, []);
 
-    return (
-        <Layout>
-          <Heading />
+  // ordina i film in base all'ordine corrente
+  const sortedMovies = [...movies].sort(sortMovies);
 
-          <MovieList loading={loading}>
-            {movies.map((item, key) => (
-              <MovieItem key={key} {...item} />
-            ))}
-          </MovieList>
-        </Layout>
-    );
+  return (
+    <Layout>
+      <Heading />
+
+      <div className="flex justify-center mb-8">
+        <Button
+          onClick={() => setOrderBy('recent')}
+          variant={orderBy === 'recent' ? 'primary' : 'outline-primary'}
+          className="mx-2"
+        >
+          Più recenti
+        </Button>
+
+        <Button
+          onClick={() => setOrderBy('rating')}
+          variant={orderBy === 'rating' ? 'primary' : 'outline-primary'}
+          className="mx-2"
+        >
+          Per rating
+        </Button>
+      </div>
+
+      <MovieList loading={loading}>
+        {sortedMovies.map((item, key) => (
+          <MovieItem key={key} {...item} />
+        ))}
+      </MovieList>
+    </Layout>
+  );
 };
 
 
@@ -51,12 +86,12 @@ const Layout = props => {
 // torna alla view l'header con titolo e paragrafo
 const Heading = props => {
     return (
-        <div className="mx-auto max-w-screen-sm text-center mb-8 lg:mb-16">
+        <div className="mx-auto max-w-screen-sm text-center ">
           <h1 className="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">
             Movie Collection
           </h1>
 
-          <p className="font-light text-gray-500 lg:mb-16 sm:text-xl dark:text-gray-400">
+          <p className="font-light text-gray-500 lg:mb-8 sm:text-xl dark:text-gray-400">
             Explore the whole collection of movies
           </p>
         </div>
