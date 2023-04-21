@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Rating, Spinner } from 'flowbite-react';
 
+
+// fetch dei dati da api e restituisce alla view
 const Index = props => {
     const [movies, setMovies] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -33,6 +35,8 @@ const Index = props => {
     );
 };
 
+
+// torna alla view il layout per tutta l'applicazione
 const Layout = props => {
     return (
         <section className="bg-white dark:bg-gray-900">
@@ -43,6 +47,8 @@ const Layout = props => {
     );
 };
 
+
+// torna alla view l'header con titolo e paragrafo
 const Heading = props => {
     return (
         <div className="mx-auto max-w-screen-sm text-center mb-8 lg:mb-16">
@@ -57,6 +63,8 @@ const Heading = props => {
     );
 };
 
+
+// nel caso in cui la pagina dovesse perdere del tempo a caricare mostra uno spinner
 const MovieList = props => {
     if (props.loading) {
         return (
@@ -73,6 +81,8 @@ const MovieList = props => {
     );
 };
 
+
+// torna alla view le card contenente i dati dinamici
 const MovieItem = props => {
     return (
         <div className="flex flex-col w-full h-full rounded-lg shadow-md lg:max-w-sm">
