@@ -16,6 +16,7 @@ return [
     '_profiler_router' => [['token'], ['_controller' => 'web_profiler.controller.router::panelAction'], [], [['text', '/router'], ['variable', '/', '[^/]++', 'token', true], ['text', '/_profiler']], [], [], []],
     '_profiler_exception' => [['token'], ['_controller' => 'web_profiler.controller.exception_panel::body'], [], [['text', '/exception'], ['variable', '/', '[^/]++', 'token', true], ['text', '/_profiler']], [], [], []],
     '_profiler_exception_css' => [['token'], ['_controller' => 'web_profiler.controller.exception_panel::stylesheet'], [], [['text', '/exception.css'], ['variable', '/', '[^/]++', 'token', true], ['text', '/_profiler']], [], [], []],
+    'app_api_genres_list' => [[], ['_controller' => 'App\\Controller\\Api\\GenresController::list'], [], [['text', '/api/genres']], [], [], []],
     'app_api_movies_list' => [[], ['_controller' => 'App\\Controller\\Api\\MoviesController::list'], [], [['text', '/api/movies']], [], [], []],
     'app_index_index' => [[], ['_controller' => 'App\\Controller\\IndexController::index'], [], [['text', '/']], [], [], []],
     'all' => [['all'], ['_controller' => 'App\\Controller\\IndexController::index'], ['all' => '.+'], [['variable', '/', '.+', 'all', true]], [], [], []],

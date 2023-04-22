@@ -6,21 +6,67 @@ import { Button, Rating, Spinner } from 'flowbite-react';
 const Index = props => {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [orderBy, setOrderBy] = useState('recent'); // default to 'recent'
+  const [orderBy, setOrderBy] = useState('recent'); // default 'recent'
+  const [genres, setGenres] = useState([]); // tutti i generi
+  const [selectedGenre, setSelectedGenre] = useState(''); //valore del genere per filtro categoria
+
 
   const fetchMovies = () => {
     setLoading(true);
 
+    const handleSubmit = (event) => {
+      event.preventDefault();
+    
+      return fetch("/api/movies", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ genre_id: selectedGenre }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          setMovies(data.movies);
+        });
+    };
+    
+
     return fetch('/api/movies')
       .then(response => response.json())
       .then(data => {
-        setMovies(data.movies);
+        setMovies(data.movies); // set dei movie
+        setLoading(false);
+      });
+
+
+  };
+
+  const fetchGenres = () => {
+    setLoading(true);
+
+    return fetch('/api/genres')
+      .then(response => response.json())
+      .then(data => {
+        setGenres(data.genres); // set dei generi
+        console.log(data.genres);
         setLoading(false);
       });
   };
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+  
+    fetch(`/api/movies?genre_id=${selectedGenre}`)
+      .then(response => response.json())
+      .then(data => {
+        setMovies(data.movies);
+      });
+  };
+  
+  
   useEffect(() => {
     fetchMovies();
+    fetchGenres();
   }, []);
 
 
@@ -59,6 +105,35 @@ const Index = props => {
         >
           Per rating
         </Button>
+
+        <div className='flex flex-wrap justify-center'>
+
+          <form onSubmit={handleSubmit}>
+            <select
+              name="genre_id"
+              value={selectedGenre}
+              onChange={(event) => setSelectedGenre(event.target.value)}
+            >
+              <option value="">Tutti i generi</option>
+              {genres.map((genre) => (
+                <option key={genre.id} value={genre.id}>
+                  {genre.value}
+                </option>
+              ))}
+            </select>
+            <button
+            type="submit"
+            className={`ml-2 px-4 py-2 rounded-md text-white ${
+              selectedGenre ? 'bg-green-500' : 'bg-gray-400'
+            }`}
+            disabled={!selectedGenre}
+          >
+            Filtra per genere
+          </button>
+          </form>
+       
+        </div>
+
       </div>
 
       <MovieList loading={loading}>

@@ -14,6 +14,7 @@ return [
         '/_profiler/phpinfo' => [[['_route' => '_profiler_phpinfo', '_controller' => 'web_profiler.controller.profiler::phpinfoAction'], null, null, null, false, false, null]],
         '/_profiler/xdebug' => [[['_route' => '_profiler_xdebug', '_controller' => 'web_profiler.controller.profiler::xdebugAction'], null, null, null, false, false, null]],
         '/_profiler/open' => [[['_route' => '_profiler_open_file', '_controller' => 'web_profiler.controller.profiler::openAction'], null, null, null, false, false, null]],
+        '/api/genres' => [[['_route' => 'app_api_genres_list', '_controller' => 'App\\Controller\\Api\\GenresController::list'], null, null, null, false, false, null]],
         '/api/movies' => [[['_route' => 'app_api_movies_list', '_controller' => 'App\\Controller\\Api\\MoviesController::list'], null, null, null, false, false, null]],
         '/' => [[['_route' => 'app_index_index', '_controller' => 'App\\Controller\\IndexController::index'], null, null, null, false, false, null]],
     ],
