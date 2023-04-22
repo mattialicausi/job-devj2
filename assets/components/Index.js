@@ -27,6 +27,7 @@ const Index = props => {
         .then((response) => response.json())
         .then((data) => {
           setMovies(data.movies);
+          setLoading(false);
         });
     };
     
@@ -126,7 +127,7 @@ const Index = props => {
             className={`ml-2 px-4 py-2 rounded-md text-white ${
               selectedGenre ? 'bg-green-500' : 'bg-gray-400'
             }`}
-            disabled={!selectedGenre}
+           
           >
             Filtra per genere
           </button>
